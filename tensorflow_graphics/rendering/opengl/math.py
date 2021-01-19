@@ -256,7 +256,7 @@ def ndc_to_screen(point_ndc_space,
         tensors=(lower_left_corner, screen_dimensions, near, far),
         last_axes=-2,
         tensor_names=("lower_left_corner", "screen_dimensions", "near", "far"),
-        broadcast_compatible=False)
+        broadcast_compatible=True)
     shape.compare_batch_dimensions(
         tensors=(point_ndc_space, near),
         last_axes=-2,
@@ -269,10 +269,12 @@ def ndc_to_screen(point_ndc_space,
     far = asserts.assert_all_above(far, near, open_bound=True)
 
     ndc_to_screen_factor = tf.concat(
-        (screen_dimensions, far - near), axis=-1) / 2.0
+        (far * 0 + screen_dimensions, far - near), axis=-1) / 2.0
     screen_center = tf.concat(
-        (lower_left_corner + screen_dimensions / 2.0, (near + far) / 2.0),
+        (far * 0 + lower_left_corner + screen_dimensions / 2.0,
+         (near + far) / 2.0),
         axis=-1)
+
     return ndc_to_screen_factor * point_ndc_space + screen_center
 
 

@@ -175,6 +175,9 @@ def rasterize(vertices,
         geometry_shader=geometry_shader,
         fragment_shader=fragment_shader)
 
+    # Note: such slicing of the tensor will result in all batch dimensions being
+    # None for tensorflow graph mode. In eager mode, batch shapes will be
+    # preserved.
     triangle_index = tf.cast(rasterized[..., 0], tf.int32) - 1
     barycentric_coordinates = rasterized[..., 1:3]
     barycentric_coordinates = tf.concat(

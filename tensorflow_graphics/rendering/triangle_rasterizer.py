@@ -135,7 +135,7 @@ def rasterize(vertices,
         backend)
     outputs = {"mask": mask, "triangle_indices": triangle_index}
 
-    batch_shape = triangle_index.shape[:-3]
+    batch_shape = triangle_index.shape[:-2]
     batch_shape = [_dim_value(dim) for dim in batch_shape]
 
     vertices = tf.gather(vertices, triangles, axis=-2)
